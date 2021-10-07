@@ -10,6 +10,7 @@ Use the package manager [pip](https://pip.pypa.io/en/stable/) to install the app
 It uses docker image of redis on port 6379 so don't forget to pull the redis image.
 
 ```bash
+cd fserver/
 docker run -p 6379:6379 -d redis:5
 pip install -r fserver/requirements.txt
 ```
