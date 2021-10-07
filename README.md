@@ -12,7 +12,7 @@ It uses docker image of redis on port 6379 so don't forget to pull the redis ima
 ```bash
 cd fserver/
 docker run -p 6379:6379 -d redis:5
-pip install -r fserver/requirements.txt
+pip install -r requirements.txt
 ```
 
 ## Usage
