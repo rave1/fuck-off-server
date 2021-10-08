@@ -6,7 +6,9 @@ export const Container = styled.div`
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    padding: 32px 12px 12px;
+    width: 494px;
+    height: 500px;
+    padding: 32px;
 `;
 
 export const Title = styled.h1`
@@ -19,24 +21,45 @@ export const Title = styled.h1`
 export const Button = styled.button`
     border: none;
     outline: none;
+    padding: 0;
     width: 180px;
     height: 44px;
     color: #FFFFFF;
-    font-size: 16px;
+    font-size: 24px;
     font-weight: bold;
-    background-color: #FCA311;
-    text-transform: uppercase;;
+    background-color: unset;
+    text-transform: uppercase;
+    cursor: pointer;
+    letter-spacing: 10px;
+    font-family: 'VT323', monospace;
+    box-sizing: border-box;
+    border: 2px solid #FFFFFF;
+    &:hover {
+        border: 2px solid #FCA311;
+        background-color: #FCA311;
+        color: #FFFFFF;
+    }
 `;
 
 export const Input = styled.input`
     height: 44px;
     border: none;
     padding: none;
-    width: 300px;
+    width: 100%;
     box-sizing: border-box;
-    padding: 0 12px;
-    cursor: pointer;
+    padding: 0;
+    cursor: text;
     outline: none;
+    background-color: #000000;
+    color: #E5E5E5;
+    font-weight: bold;
+    font-size: 24px;
+    font-family: 'VT323', monospace;
+    border-bottom: 2px solid #FFFFFF;
+    &::placeholder {
+        color: #E5E5E5;
+        text-transform: uppercase;
+    }
 `;
 
 export const InputWrapper = styled.div`
