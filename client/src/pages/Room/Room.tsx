@@ -1,7 +1,18 @@
-import { useState ,useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { useParams, useHistory } from 'react-router-dom';
+import { 
+    Container, 
+    Title,
+    Button, 
+    Input, 
+    InputWrapper,
+    MessagesWrapper,
+    HeaderWrapper,
+    StyledLink
+} from './Room.styles';
 
 export function Room() {
+    const history = useHistory();
     const { name } = useParams<{name: string}>();
     const [socket, setSocket] = useState<any>(null);
     const [value, setValue] = useState('');
@@ -18,7 +29,6 @@ export function Room() {
         }
     }, [name])
 
-
     useEffect(() => {
         if (socket) {
             socket.onmessage = (e: any) => {
@@ -28,7 +38,7 @@ export function Room() {
         }
     }, [socket])
 
-    const handleClick = () => {
+    const submitMessage = () => {
         if (value && socket) {
             socket.send(JSON.stringify({
                 'message': value
@@ -36,18 +46,45 @@ export function Room() {
             setValue('');
         }
     }
+
+    const handleEnterClick = (e: any) => {
+        if(e.key === 'Enter' && !e.shiftKey) {
+            e.preventDefault();
+            return submitMessage();
+        }
+    }
+
+    const leaveChat = () => {
+        if (socket) {
+            socket.close();
+        }
+        return history.push('/');
+    }
+
     return (
-        <div>
-            <h1>Room {name && name}</h1>
-            <div>
-                {messages.length > 0 && messages.map((each: any, index: number) => (
-                    <p key={index}>{each}</p>
-                ))}
-            </div>
-            <div>
-                <input type="text" onChange={(e) => setValue(e.target.value)} value={value} />
-                <button onClick={handleClick}>SEND</button>
-            </div>
-        </div>
+        <Container>
+            <HeaderWrapper>
+                <Title>Room: {name && name}</Title>
+                <StyledLink onClick={() => leaveChat()}>Leave chat</StyledLink>
+            </HeaderWrapper>
+            <MessagesWrapper>
+                {messages.length > 0 
+                    ? messages.map((each: any, index: number) => (
+                        <p key={index}>{each}</p>
+                    ))
+                    : <p>No messages...</p>
+                }
+            </MessagesWrapper>
+            <InputWrapper>
+                <Input 
+                    type="text" 
+                    onChange={(e) => setValue(e.target.value)} 
+                    value={value} 
+                    placeholder="Message"
+                    onKeyDown={handleEnterClick}
+                />
+                <Button onClick={submitMessage}>Send</Button>
+            </InputWrapper>
+        </Container>
     )
 }
