@@ -4,7 +4,7 @@ from rest_framework.response import Response
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework import viewsets
 from rest_framework import status
-from auth.serializers import UserSerializer
+from api.serializers import UserSerializer
 from rest_framework import generics
 from django.contrib.auth.models import User
 
