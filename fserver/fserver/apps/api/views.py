@@ -32,8 +32,12 @@ class RegisterView(generics.GenericAPIView):
         serializer = self.serializer_class(data=request.data)
         serializer.is_valid(raise_exception=True)
         user = serializer.create(serializer.validated_data)
-        user = authenticate(email=serializer.validated_data['email'],
+        user = authenticate(username=serializer.validated_data['email'],
                                 password=serializer.validated_data['password1'])
+        if not user:
+            return Response({
+                'auth error'
+            }, status=status.HTTP_400_BAD_REQUEST)
         login(request, user)
         result = deepcopy(serializer.data)
         result.update({'success': True})
