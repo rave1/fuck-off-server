@@ -32,6 +32,7 @@ export function HomePage() {
                         onSubmit={(values) => {
                             if (register) {
                                 return axios.post('http://127.0.0.1:8000/auth/register/', {
+                                    username: values.email,
                                     email: values.email,
                                     password1: values.password1,
                                     password2: values.password2

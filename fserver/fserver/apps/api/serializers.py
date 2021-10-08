@@ -1,11 +1,12 @@
 from copy import deepcopy
+from django.contrib.auth import get_user_model
 
 from rest_framework import fields, serializers
 from rest_framework.response import Response
 from rest_framework import status
-from django.contrib.auth.models import User
 from rest_framework.exceptions import ValidationError
 
+User = get_user_model()
 class UserSerializer(serializers.ModelSerializer):
     pass
 
@@ -18,7 +19,8 @@ class UserRegisterSerializer(serializers.ModelSerializer):
         if User.objects.filter(email=data['email']):
             raise ValidationError({'email': 'user with this email already exists'})
         if data['password1'] != data['password2']:
-            raise ValidationError({'password2': 'Passwords not matching'})
+            raise ValidationError({'password2': 'Passwords do not match'})
+        print(data)
         return data
 
     def create(self, validated_data):
@@ -30,7 +32,7 @@ class UserRegisterSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('email', 'password1', 'password2')
+        fields = ('email', 'username', 'password1', 'password2')
 
 
 class UserLoginSerializer(serializers.Serializer):
