@@ -1,13 +1,14 @@
 # chat/consumers.py
 import json
-from typing import AsyncIterator
 from channels.generic.websocket import AsyncWebsocketConsumer
-from time import sleep
 import asyncio
+from channels.auth import login
 
 class ChatConsumer(AsyncWebsocketConsumer):
     async def connect(self):
-        print(self.scope['user'])
+        user = self.scope['user']
+        if not user:
+            await self.close()
         self.room_name = self.scope['url_route']['kwargs']['room_name']
         self.room_group_name = 'chat_%s' % self.room_name
 
@@ -47,7 +48,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
                 self.room_group_name,
                 {
                     'type': 'chat_message',
-                    'message': message
+                    'message': f'username: {self.scope["user"]} {message}'
                 }
             )
 

@@ -15,7 +15,7 @@ export function Chat({ roomName }: ChatProps) {
 
     useEffect(() => {
         if (roomName && authToken) {
-            const webSocket = new WebSocket(`ws://127.0.0.1:8000/ws/chat/${roomName}/?token=${authToken}/`)
+            const webSocket = new WebSocket(`ws://127.0.0.1:8000/ws/chat/${roomName}/?token=${authToken}`)
             setSocket(webSocket);
         }
     }, [roomName, authToken])
