@@ -26,22 +26,24 @@ export function HomePage() {
                     <Formik
                         initialValues={{
                             email: '',
-                            password: ''
+                            password1: '',
+                            password2: ''
                         }}
                         onSubmit={(values) => {
                             if (register) {
                                 return axios.post('http://127.0.0.1:8000/auth/register/', {
-                                    username: values.email,
-                                    password: values.password
+                                    email: values.email,
+                                    password1: values.password1,
+                                    password2: values.password2
                                 }).then(() => {
-                                    return history.push('/join/')
+                                    return history.push('/dashboard/')
                                 })
                             }
                             return axios.post('http://127.0.0.1:8000/auth/login/', {
                                 username: values.email,
-                                password: values.password
+                                password: values.password1
                             }).then(() => {
-                                return history.push('/join/')
+                                return history.push('/dashboard/')
                             })
                         }}
                     >
@@ -51,7 +53,10 @@ export function HomePage() {
                             </ActionTypeTitle>
                             <FormWrapper>
                                 <Field id="email" name="email" placeholder="Email" />
-                                <Field id="password" name="password" placeholder="Password" type="password" />
+                                <Field id="password1" name="password1" placeholder="Password" type="password" />
+                                {register &&
+                                    <Field id="password2" name="password2" placeholder="Password" type="password" />
+                                }
                                 <Button type="submit">
                                     {register ? 'Register' : 'Login'}
                                 </Button>

@@ -33,7 +33,7 @@ export const Title = styled.h1`
     animation: ${typing} 3.5s steps(40, end), ${blinkCaret} .75s step-end infinite;
     text-shadow: 6px -4px #FCA311;
     font-family: 'VT323', monospace;
-    `;
+`;
 
 export const TitleWrapper = styled.div`
     display: flex;
