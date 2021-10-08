@@ -1,0 +1,46 @@
+version: '3'
+
+volumes:
+  redis:
+
+services:
+    # backend:
+    #     image: python:3.9
+    #     volumes:
+    #         - ./fserver
+    #     ports:
+    #         - 8000:8000
+    #     command: bash -c "pip install -r requirements.txt && python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
+
+  backend:
+    build:
+      context: ./fserver
+      target: dev
+    restart: unless-stopped
+    command: bash -c "python manage.py collectstatic --noinput && python manage.py migrate && exec python manage.py runserver 0.0.0.0:8000"
+    ports:
+      - 8000:8000
+    # env_file:
+    #   - .env
+    volumes:
+      - ./fserver:/code
+
+  proxy:
+    build:
+      context: ./proxy
+    restart: unless-stopped
+    ports:
+      - 8080:80
+    volumes:
+      - ./proxy/config:/etc/nginx/templates
+    environment:
+      - BACKEND_SERVER=host.docker.internal:8000,
+
+      
+  redis:
+    image: redis:latest
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis:/data
