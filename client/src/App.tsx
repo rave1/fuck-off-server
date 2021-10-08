@@ -1,16 +1,20 @@
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
-import { Home } from './pages/Home';
+import { Home } from './pages/JoinChat';
 import { Room } from './pages/Room';
+import { HomePage } from './pages/HomePage';
 
 function App() {
     return (
         <Router>
             <Switch>
-                <Route exact path="/room/:name/">
+                <Route path="/room/:name/">
                     <Room />
                 </Route>
-                <Route exact path="/">
+                <Route path="/join/">
                     <Home />
+                </Route>
+                <Route exact path="/">
+                    <HomePage />
                 </Route>
             </Switch>
         </Router>
