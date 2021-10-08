@@ -1,3 +1,4 @@
+import { Chat } from "../../components/Chat";
 import { Navbar } from "../../components/Navbar";
 import { UserList } from "../../components/UserList";
 import { PageContainer } from "../Pages.styles";
@@ -13,7 +14,7 @@ export function Dashboard() {
                     <UserList />
                     <UserList />
                 </div>
-                <div>Chat</div>
+                <Chat roomName="dupa" />
             </Container>
         </PageContainer>
     )
