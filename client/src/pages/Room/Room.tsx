@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
+import { useAuth } from '../../context/auth';
 import { 
     Container, 
     Title,
@@ -16,18 +17,19 @@ export function Room() {
     const { name } = useParams<{name: string}>();
     const [socket, setSocket] = useState<any>(null);
     const [value, setValue] = useState('');
-    const [messages, setMessages] = useState<any>([])
+    const [messages, setMessages] = useState<any>([]);
+    const { authToken } = useAuth();
 
     const updateMessages = (newMessage: string) => {
         setMessages((prev: any) => [...prev, newMessage]);
     }
 
     useEffect(() => {
-        if (name) {
-            const webSocket = new WebSocket(`ws://127.0.0.1:8000/ws/chat/${name}/`)
+        if (name && authToken) {
+            const webSocket = new WebSocket(`ws://127.0.0.1:8000/ws/chat/${name}/?token=${authToken}`)
             setSocket(webSocket);
         }
-    }, [name])
+    }, [name, authToken])
 
     useEffect(() => {
         if (socket) {

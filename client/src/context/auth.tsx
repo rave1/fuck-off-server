@@ -37,7 +37,7 @@ function authReducer(state: State, action: Action) {
     switch (action.type) {
         case 'setToken': {
             if (action.token) {
-                localStorage.setItem("key", action.token);
+                localStorage.setItem("token", action.token);
                 return {
                     authToken: action.token
                 }
