@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import axios from 'axios';
 import { Formik, Form, Field } from 'formik';
+import { useAuth } from '../../context/auth';
 import { PageContainer } from '../Pages.styles';
 import { 
     Container, 
@@ -15,7 +16,13 @@ import {
 
 export function HomePage() {
     const history = useHistory();
+    const { authToken, authDispatch } = useAuth();
     const [register, setRegister] = useState(false);
+    useEffect(() => {
+        if (authToken) {
+            history.push('/dashboard/');
+        }
+    }, [authToken])
     return (
         <PageContainer>
             <Container>
@@ -36,15 +43,17 @@ export function HomePage() {
                                     email: values.email,
                                     password1: values.password1,
                                     password2: values.password2
-                                }).then(() => {
-                                    return history.push('/dashboard/')
+                                }).then((res: any) => {
+                                    authDispatch({ type: 'setToken', token: res.data.token });
+                                    return history.push('/dashboard/');
                                 })
                             }
                             return axios.post('http://127.0.0.1:8000/auth/login/', {
                                 username: values.email,
                                 password: values.password1
-                            }).then(() => {
-                                return history.push('/dashboard/')
+                            }).then((res: any) => {
+                                authDispatch({ type: 'setToken', token: res.data.token });
+                                return history.push('/dashboard/');
                             })
                         }}
                     >
