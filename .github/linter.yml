@@ -1,0 +1,2 @@
+- name: PyAction: One-stop Python linter
+  uses: rahul-deepsource/pyaction@1.4.1
