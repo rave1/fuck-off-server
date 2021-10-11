@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react';
+import { useAuth } from '../../context/auth';
 import { ChatProps } from "./Chat.interface";
 import { Container, ChatFooter, ChatHeader } from "./Chat.styles";
 
 export function Chat({ roomName }: ChatProps) {
+    const { authToken } = useAuth();
     const [socket, setSocket] = useState<any>(null);
     const [value, setValue] = useState('');
     const [messages, setMessages] = useState<any>([])
@@ -12,11 +14,11 @@ export function Chat({ roomName }: ChatProps) {
     }
 
     useEffect(() => {
-        if (roomName) {
-            const webSocket = new WebSocket(`ws://127.0.0.1:8000/ws/chat/${roomName}/`)
+        if (roomName && authToken) {
+            const webSocket = new WebSocket(`ws://127.0.0.1:8000/ws/chat/${roomName}/?token=${authToken}`)
             setSocket(webSocket);
         }
-    }, [roomName])
+    }, [roomName, authToken])
 
     useEffect(() => {
         if (socket) {
