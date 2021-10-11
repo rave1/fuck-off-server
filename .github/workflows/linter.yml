@@ -1,2 +1,12 @@
-- name: PyAction: One-stop Python linter
-  uses: rahul-deepsource/pyaction@1.4.1
+on: [push, pull_request]
+
+jobs:
+  python-lint:
+    runs-on: ubuntu-latest
+    name: CI workflow
+    steps:
+    - name: checkout source repo
+      uses: actions/checkout@v2
+
+    - name: linting
+      uses: alexanderdamiani/pylinter@v1.2.0
