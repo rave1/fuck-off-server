@@ -8,10 +8,11 @@ from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.authtoken.models import Token
 from rest_framework import viewsets
 from rest_framework import status
-from api.serializers import UserSerializer, UserLoginSerializer, UserRegisterSerializer
+from api.serializers import MessageSerializer, UserSerializer, UserLoginSerializer, UserRegisterSerializer
 from rest_framework import generics
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login
+from chat.models import Message
 
 
 class HelloView(APIView):
@@ -67,3 +68,12 @@ class LoginView(generics.GenericAPIView):
             'user': 'user_data',
             'token': token.key
         })
+
+
+class MessageViewset(viewsets.ModelViewSet):
+
+    serializer_class = MessageSerializer
+    queryset = Message.objects.all()
+    permission_classes = (IsAuthenticated, )
+
+
