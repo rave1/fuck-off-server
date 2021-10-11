@@ -1,5 +1,5 @@
 import { PageLogo } from "../PageLogo";
-import { Container } from "./Navbar.styles";
+import { Container, Button } from "./Navbar.styles";
 
 export function Navbar() {
     return (
@@ -7,8 +7,8 @@ export function Navbar() {
             <div>
                 <PageLogo fontSize="36px" />
                 <div>
-                    <button>My profile</button>
-                    <button>Logout</button>
+                    <Button>My profile</Button>
+                    <Button>Logout</Button>
                 </div>
             </div>
         </Container>
