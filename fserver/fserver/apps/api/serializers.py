@@ -5,6 +5,9 @@ from rest_framework import fields, serializers
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.exceptions import ValidationError
+from chat.models import Message
+
+from chat.models import Message
 
 User = get_user_model()
 class UserSerializer(serializers.ModelSerializer):
@@ -38,3 +41,12 @@ class UserRegisterSerializer(serializers.ModelSerializer):
 class UserLoginSerializer(serializers.Serializer):
     username = serializers.CharField()
     password = serializers.CharField()
+
+
+class MessageSerializer(serializers.ModelSerializer):
+    message = serializers.CharField()
+    author = serializers.JSONField()
+
+    class Meta:
+        model = Message
+        fields = ('message', 'author', 'created_at')
