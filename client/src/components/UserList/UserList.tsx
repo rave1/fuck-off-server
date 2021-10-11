@@ -1,9 +1,12 @@
-import { Container, UserName, Message } from './UserList.styles';
+import { Container, UserName, Message, Image } from './UserList.styles';
 export function UserList() {
     return (
         <Container>
-            <UserName>@sam-sepiol</UserName>
-            <Message>Hello!</Message>
+            <Image></Image>
+            <div>
+                <UserName>@sam-sepiol</UserName>
+                <Message>Hello!</Message>    
+            </div>
         </Container>
     )
 }
