@@ -46,7 +46,14 @@ class UserLoginSerializer(serializers.Serializer):
 class MessageSerializer(serializers.ModelSerializer):
     message = serializers.CharField()
     author = serializers.JSONField()
+    is_author = serializers.SerializerMethodField()
+
+    def get_is_author(self, message):
+        if message.author == self.context['user'].email:
+            return True
+        else:
+            return False
 
     class Meta:
         model = Message
-        fields = ('message', 'author', 'created_at')
+        fields = ('message', 'author', 'created_at', 'is_author')
