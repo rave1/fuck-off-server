@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import axios from 'axios';
 import { useAuth } from '../../context/auth';
 import { ChatProps } from "./Chat.interface";
 import { Container, ChatFooter, ChatHeader } from "./Chat.styles";
@@ -9,21 +10,32 @@ export function Chat({ roomName }: ChatProps) {
     const [value, setValue] = useState('');
     const [messages, setMessages] = useState<any>([])
 
-    const updateMessages = (newMessage: string) => {
-        setMessages((prev: any) => [...prev, newMessage]);
+    const updateMessages = (newMessage: any) => {
+        setMessages((prev: any) => [...prev, newMessage.message]);
     }
 
     useEffect(() => {
         if (roomName && authToken) {
-            const webSocket = new WebSocket(`ws://127.0.0.1:8000/ws/chat/${roomName}/?token=${authToken}`)
-            setSocket(webSocket);
+            axios.get('http://127.0.0.1:8000/auth/messages/', {
+                headers: {
+                    Authorization: `Token ${authToken}`
+                }
+            })
+            .then((res: any) => {
+                const oldMessages: any = res.data;
+                setMessages([...oldMessages])
+            })
+            .finally(() => {
+                const webSocket = new WebSocket(`ws://127.0.0.1:8000/ws/chat/${roomName}/?token=${authToken}`)
+                setSocket(webSocket);
+            })
         }
     }, [roomName, authToken])
 
     useEffect(() => {
         if (socket) {
             socket.onmessage = (e: any) => {
-                const data = JSON.parse(e.data).message;
+                const data = JSON.parse(e.data);
                 updateMessages(data);
             }
         }
@@ -56,7 +68,10 @@ export function Chat({ roomName }: ChatProps) {
                         <div className="scroll">
                             {messages.length > 0 
                                 ? messages.map((each: any, index: number) => (
-                                    <p key={index}>{each}</p>
+                                    <p key={index}>
+                                        {each.author}<br/>
+                                        {each.message}
+                                    </p>
                                 ))
                                 : <p>No messages...</p>
                             }

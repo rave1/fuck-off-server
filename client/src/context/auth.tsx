@@ -54,7 +54,7 @@ function AuthProvider({ children }: AuthProviderProps) {
     const existingToken = localStorage.getItem('token');
     const [state, dispatch] = useReducer(authReducer, initialValues);
     const value = {
-        authToken: state.authToken,
+        authToken: existingToken,
         authDispatch: dispatch
     }
     return (
