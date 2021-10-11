@@ -5,7 +5,7 @@ import asyncio
 from chat.models import Message
 from channels.auth import login
 from channels.db import database_sync_to_async
-
+from datetime import datetime
 class ChatConsumer(AsyncWebsocketConsumer):
     async def connect(self):
         user = self.scope['user']
@@ -50,7 +50,11 @@ class ChatConsumer(AsyncWebsocketConsumer):
                 self.room_group_name,
                 {
                     'type': 'chat_message',
-                    'message': f'username: {self.scope["user"]} {message}'
+                    'message': {
+                        'author': f'{self.scope["user"]}',
+                        'message': message,
+                        'created_at': str(datetime.now())
+                    }
                 }
             )
             await self.save_message(message, self.scope['user'].email)

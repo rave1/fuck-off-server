@@ -24,6 +24,7 @@ export function Chat({ roomName }: ChatProps) {
         if (socket) {
             socket.onmessage = (e: any) => {
                 const data = JSON.parse(e.data).message;
+                console.log(JSON.parse(e.data))
                 updateMessages(data);
             }
         }
