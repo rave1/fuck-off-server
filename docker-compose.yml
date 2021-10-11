@@ -1,0 +1,29 @@
+version: '3'
+
+services:
+  backend:
+    build:
+      context: ./fserver
+    ports:
+      - '8000:8000'
+    volumes:
+      - ./fserver:/code
+    command: sh -c 'python manage.py migrate && python manage.py runserver 0.0.0.0:8000'
+  
+  frontend:
+    build:
+      context: ./client
+      target: dev
+    restart: unless-stopped
+    command: sh -c 'ls -a && npm run start'
+    ports:
+      - 3000:3000
+    volumes:
+      - ./client:/code
+      - ./client/node_modules:/code/node_modules
+
+  redis:
+    image: redis:latest
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
