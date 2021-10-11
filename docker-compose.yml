@@ -1,6 +1,17 @@
 version: '3'
 
 services:
+
+  db:
+    image: postgres:12
+    restart: unless-stopped
+    environment:
+      - POSTGRES_DB=chat
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=dev-use-only
+    ports:
+      - 5432:5432
+
   backend:
     build:
       context: ./fserver
@@ -9,6 +20,13 @@ services:
     volumes:
       - ./fserver:/code
     command: sh -c 'python manage.py migrate && python manage.py runserver 0.0.0.0:8000'
+    environment:
+      - DB_HOST=db
+      - DB_NAME=chat
+      - DB_USER=postgres
+      - DB_PASS=dev-use-only
+    depends_on:
+      - db
   
   frontend:
     build:
@@ -27,3 +45,4 @@ services:
     restart: unless-stopped
     ports:
       - "6379:6379"
+  
