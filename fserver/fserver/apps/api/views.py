@@ -8,6 +8,7 @@ from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.authtoken.models import Token
 from rest_framework import viewsets
 from rest_framework import status
+from rest_framework.pagination import PageNumberPagination
 from api.serializers import MessageSerializer, UserSerializer, UserLoginSerializer, UserRegisterSerializer
 from rest_framework import generics
 from django.contrib.auth.models import User
@@ -75,5 +76,14 @@ class MessageViewset(viewsets.ModelViewSet):
     serializer_class = MessageSerializer
     queryset = Message.objects.all()
     permission_classes = (IsAuthenticated, )
+    pagination_class = PageNumberPagination
 
-
+    def list(self, request):
+        queryset = self.queryset
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True, context={'user': request.user})
+            return self.get_paginated_response(serializer.data)
+        serializer = self.serializer_class(queryset, many=True, context={'user': request.user})
+        
+        return Response(serializer.data)
